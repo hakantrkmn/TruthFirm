@@ -15,6 +15,12 @@
 		491F455C2C80F79E00B8CC53 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 491F455B2C80F79E00B8CC53 /* FirebaseAuth */; };
 		491F455E2C80F79E00B8CC53 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 491F455D2C80F79E00B8CC53 /* FirebaseFirestore */; };
 		492BC4EB2C8260DD0021C5D9 /* FirmCreatePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BC4EA2C8260DD0021C5D9 /* FirmCreatePage.swift */; };
+		492BC4ED2C8261EE0021C5D9 /* FirmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BC4EC2C8261EE0021C5D9 /* FirmModel.swift */; };
+		492BC4EF2C8261FA0021C5D9 /* FirmCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BC4EE2C8261FA0021C5D9 /* FirmCreateViewModel.swift */; };
+		492BC4F12C8262AC0021C5D9 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BC4F02C8262AC0021C5D9 /* StarRatingView.swift */; };
+		492BC4F32C826DFA0021C5D9 /* CityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BC4F22C826DFA0021C5D9 /* CityModel.swift */; };
+		492BC4F62C826F0A0021C5D9 /* cities.json in Resources */ = {isa = PBXBuildFile; fileRef = 492BC4F52C826F0A0021C5D9 /* cities.json */; };
+		492BC4F92C8339C50021C5D9 /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 492BC4F82C8339C50021C5D9 /* String+Ext.swift */; };
 		49B5F7882C80FDA8006E7A44 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B5F7872C80FDA8006E7A44 /* AuthService.swift */; };
 		49B5F78A2C80FDD3006E7A44 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B5F7892C80FDD3006E7A44 /* LoginViewModel.swift */; };
 		49B5F78C2C80FDE6006E7A44 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B5F78B2C80FDE6006E7A44 /* LoginPage.swift */; };
@@ -36,6 +42,12 @@
 		491F454F2C80F6AE00B8CC53 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		491F45562C80F6F300B8CC53 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		492BC4EA2C8260DD0021C5D9 /* FirmCreatePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmCreatePage.swift; sourceTree = "<group>"; };
+		492BC4EC2C8261EE0021C5D9 /* FirmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmModel.swift; sourceTree = "<group>"; };
+		492BC4EE2C8261FA0021C5D9 /* FirmCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmCreateViewModel.swift; sourceTree = "<group>"; };
+		492BC4F02C8262AC0021C5D9 /* StarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
+		492BC4F22C826DFA0021C5D9 /* CityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityModel.swift; sourceTree = "<group>"; };
+		492BC4F52C826F0A0021C5D9 /* cities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = cities.json; sourceTree = "<group>"; };
+		492BC4F82C8339C50021C5D9 /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		49B5F7872C80FDA8006E7A44 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		49B5F7892C80FDD3006E7A44 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		49B5F78B2C80FDE6006E7A44 /* LoginPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPage.swift; sourceTree = "<group>"; };
@@ -83,6 +95,8 @@
 		491F45472C80F6AD00B8CC53 /* TruthFirm */ = {
 			isa = PBXGroup;
 			children = (
+				492BC4F72C8339B80021C5D9 /* Extension */,
+				492BC4F42C826F030021C5D9 /* Data */,
 				49B5F79D2C8256C4006E7A44 /* CustomViews */,
 				49B5F7862C80FD77006E7A44 /* Services */,
 				49B5F7852C80FD71006E7A44 /* Views */,
@@ -104,10 +118,28 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		492BC4F42C826F030021C5D9 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				492BC4F52C826F0A0021C5D9 /* cities.json */,
+			);
+			name = Data;
+			sourceTree = "<group>";
+		};
+		492BC4F72C8339B80021C5D9 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				492BC4F82C8339C50021C5D9 /* String+Ext.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		49B5F7832C80FD5F006E7A44 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				49B5F78F2C80FE43006E7A44 /* UserModel.swift */,
+				492BC4EC2C8261EE0021C5D9 /* FirmModel.swift */,
+				492BC4F22C826DFA0021C5D9 /* CityModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -119,6 +151,7 @@
 				49B5F7912C81D52C006E7A44 /* RegisterViewModel.swift */,
 				49B5F7992C81ED9B006E7A44 /* AppViewModel.swift */,
 				49B5F79B2C825283006E7A44 /* FeedViewModel.swift */,
+				492BC4EE2C8261FA0021C5D9 /* FirmCreateViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -147,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				49B5F79E2C8256D3006E7A44 /* LoadingView.swift */,
+				492BC4F02C8262AC0021C5D9 /* StarRatingView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -218,6 +252,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				492BC4F62C826F0A0021C5D9 /* cities.json in Resources */,
 				491F45502C80F6AE00B8CC53 /* Preview Assets.xcassets in Resources */,
 				491F454D2C80F6AE00B8CC53 /* Assets.xcassets in Resources */,
 				491F45572C80F6F300B8CC53 /* GoogleService-Info.plist in Resources */,
@@ -231,17 +266,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				492BC4F92C8339C50021C5D9 /* String+Ext.swift in Sources */,
 				49B5F79A2C81ED9B006E7A44 /* AppViewModel.swift in Sources */,
+				492BC4F32C826DFA0021C5D9 /* CityModel.swift in Sources */,
 				49B5F78A2C80FDD3006E7A44 /* LoginViewModel.swift in Sources */,
 				49B5F7942C81D541006E7A44 /* RegisterPage.swift in Sources */,
+				492BC4ED2C8261EE0021C5D9 /* FirmModel.swift in Sources */,
 				492BC4EB2C8260DD0021C5D9 /* FirmCreatePage.swift in Sources */,
 				49B5F7962C81D7C5006E7A44 /* FeedPage.swift in Sources */,
 				49B5F7922C81D52C006E7A44 /* RegisterViewModel.swift in Sources */,
 				49B5F79F2C8256D3006E7A44 /* LoadingView.swift in Sources */,
 				49B5F79C2C825283006E7A44 /* FeedViewModel.swift in Sources */,
+				492BC4F12C8262AC0021C5D9 /* StarRatingView.swift in Sources */,
 				49B5F7882C80FDA8006E7A44 /* AuthService.swift in Sources */,
 				49B5F78C2C80FDE6006E7A44 /* LoginPage.swift in Sources */,
 				49B5F7902C80FE43006E7A44 /* UserModel.swift in Sources */,
+				492BC4EF2C8261FA0021C5D9 /* FirmCreateViewModel.swift in Sources */,
 				49B5F7982C81E6E3006E7A44 /* FirmTabView.swift in Sources */,
 				491F45492C80F6AD00B8CC53 /* TruthFirmApp.swift in Sources */,
 			);
@@ -385,7 +425,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -415,7 +455,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

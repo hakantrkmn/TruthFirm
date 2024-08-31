@@ -9,18 +9,17 @@ import SwiftUI
 
 struct LoadingView: View {
     var body: some View {
-        ProgressView(label: {
-            Text("Loading")
-                .bold()
-                .fontWeight(.bold)
-                .font(.largeTitle)
-                .controlSize(.large)
-            
-                
-        })
-        .frame(width: .infinity , height: 400)
-            
-    }
+            VStack {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(2)
+                    .padding()
+                    .font(.headline)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
 }
 
 #Preview {

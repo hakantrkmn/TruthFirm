@@ -1,7 +1,6 @@
 import SwiftUI
 import Firebase
 import FirebaseAuth
-
 class AppViewModel: ObservableObject {
     @Published var user: UserModel? = nil
     @Published var isLoading = true
@@ -15,12 +14,14 @@ class AppViewModel: ObservableObject {
     func checkUser() async {
         if let firebaseUser = Auth.auth().currentUser {
             do {
+                print("authda biri var")
                 let db = Firestore.firestore()
                 let userRef = db.collection("users").document(firebaseUser.uid)
                 
                 let document = try await userRef.getDocument()
                 
                 if let data = document.data() {
+                    print("adamı bulduk")
                     let username = data["username"] as? String ?? ""
                     let passwordHash = data["passwordHash"] as? String ?? ""
                     
@@ -29,6 +30,7 @@ class AppViewModel: ObservableObject {
                         self.isLoading = false
                     }
                 } else {
+                    print("data sıkıntılı")
                     DispatchQueue.main.async {
                         self.isLoading = false
                     }
@@ -40,21 +42,11 @@ class AppViewModel: ObservableObject {
                 }
             }
         } else {
+            print("authta kimse yok")
+
             DispatchQueue.main.async {
                 self.isLoading = false
             }
         }
     }
-    
-    func signOut() {
-            do {
-                try Auth.auth().signOut()
-                DispatchQueue.main.async {
-                    self.user = nil
-                    self.isLoading = false
-                }
-            } catch let signOutError as NSError {
-                print("Error signing out: %@", signOutError)
-            }
-        }
 }

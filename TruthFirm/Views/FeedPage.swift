@@ -24,6 +24,7 @@ struct FeedPage: View {
                 
                 // Add more fields as needed
                 Button("Bordered Button") {
+                    print("sa")
                          viewModel.sigOut()
                         
                     
