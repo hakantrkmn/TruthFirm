@@ -1,6 +1,6 @@
 import Foundation
 import Firebase
-import FirebaseAuth
+@MainActor
 class FirmCreateViewModel: ObservableObject {
     @Published var firmName: String = ""
     @Published var city: City? = nil
@@ -45,7 +45,8 @@ class FirmCreateViewModel: ObservableObject {
             return
         }
 
-        isLoading = true // Start loading
+        let user = loadUserInfo()
+         isLoading = true // Start loading
 
         let newFirm = FirmModel(
             matchName : firmName.lowercaseRemoveBlank(),
@@ -88,7 +89,7 @@ class FirmCreateViewModel: ObservableObject {
             // Save the review in the "reviews" collection
             let reviewRef = try await db.collection("reviews").addDocument(data: [
                 "firmId": firmRef.documentID,
-                "userId": Auth.auth().getUserID(), // Replace with actual user ID
+                "userId": user?.uid, // Replace with actual user ID
                 "rating": rating,
                 "reviewText": review,
                 "timestamp": Date.now
@@ -101,15 +102,11 @@ class FirmCreateViewModel: ObservableObject {
 
             ])
             
-            DispatchQueue.main.async {
                 self.isSaved = true
                 self.isLoading = false // Stop loading
-            }
         } catch {
-            DispatchQueue.main.async {
                 self.errorMessage = "Error saving firm: \(error.localizedDescription)"
                 self.isLoading = false // Stop loading
-            }
         }
     }
 

@@ -1,10 +1,10 @@
-import SwiftUI
+/*import SwiftUI
 import Firebase
 import FirebaseAuth
 class AppViewModel: ObservableObject {
     @Published var user: UserModel? = nil
     @Published var isLoading = true
-    
+    @EnvironmentObject var userInfo : UserInfo
     init() {
         Task {
             await checkUser()
@@ -27,6 +27,7 @@ class AppViewModel: ObservableObject {
                     
                     DispatchQueue.main.async {
                         self.user = UserModel(username: username, uid: firebaseUser.uid, passwordHash: passwordHash)
+                        self.userInfo.user = self.user!
                         self.isLoading = false
                     }
                 } else {
@@ -50,3 +51,5 @@ class AppViewModel: ObservableObject {
         }
     }
 }
+
+*/

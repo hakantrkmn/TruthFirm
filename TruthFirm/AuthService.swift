@@ -1,12 +1,11 @@
 import Firebase
 import FirebaseFunctions
 import CryptoKit
-import FirebaseAuth
 
 class AuthService {
     
     static let db = Firestore.firestore()
-
+    
     static func registerUser(username: String, password: String) async throws -> UserModel {
         let passwordHash = sha256(password)
         
@@ -17,24 +16,20 @@ class AuthService {
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Username already taken"])
         }
         
-        let authResult = try await Auth.auth().signInAnonymously()
-        let user = authResult.user
         
-        let userModel = UserModel(username: username, uid: user.uid, passwordHash: passwordHash)
-        try await usersRef.document(user.uid).setData([
+        let userModel = UserModel(username: username, uid: usersRef.document().documentID)
+        try await usersRef.document(userModel.uid).setData([
             "username": username,
             "passwordHash": passwordHash,
-            "uid": user.uid
+            "uid": userModel.uid
         ])
-        
         return userModel
     }
     static func signOut() throws {
-        try Auth.auth().signOut()
+        deleteUserInfo()
     }
     static func loginUser(username: String, password: String) async throws -> UserModel {
         let passwordHash = sha256(password)
-        
         let usersRef = db.collection("users")
         let querySnapshot = try await usersRef.whereField("username", isEqualTo: username).getDocuments()
         
@@ -44,13 +39,14 @@ class AuthService {
         
         let storedHash = document.get("passwordHash") as? String
         if storedHash != passwordHash {
+            print("laksndşaks")
+
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid password"])
         }
         
-        let authResult = try await Auth.auth().signInAnonymously()
-        let user = authResult.user
-        
-        return UserModel(username: username, uid: user.uid, passwordHash: passwordHash)
+        let userModel = UserModel(username: username, uid: document.get("uid") as! String)
+        saveUserInfo(userModel)
+        return userModel
     }
     
     static private func sha256(_ input: String) -> String {
@@ -59,4 +55,27 @@ class AuthService {
         let hashString = hashedData.compactMap { String(format: "%02x", $0) }.joined()
         return hashString
     }
+}
+
+
+func saveUserInfo(_ userInfo: UserModel) {
+    let defaults = UserDefaults.standard
+    if let encoded = try? JSONEncoder().encode(userInfo) {
+        defaults.set(encoded, forKey: "auth")
+    }
+}
+
+func deleteUserInfo() {
+    let defaults = UserDefaults.standard
+    defaults.removeObject(forKey: "auth")
+}
+
+func loadUserInfo() -> UserModel? {
+    let defaults = UserDefaults.standard
+    if let savedUserData = defaults.object(forKey: "auth") as? Data {
+        if let decodedUser = try? JSONDecoder().decode(UserModel.self, from: savedUserData) {
+            return decodedUser
+        }
+    }
+    return nil
 }

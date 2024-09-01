@@ -9,14 +9,40 @@ import SwiftUI
 import Foundation
 struct FirmTabView: View {
     
-    var user : UserModel
     var body: some View {
             TabView {
-                FeedPage(user : user)
-                    .tabItem { Label("Feed" , systemImage: "list.dash") }
+                NavigationStack
+                {
+                    FeedPage()
+                }
+                .tabItem { 
+                    Image(systemName: "moon")
+                    Text("Feed" )
+                }
+                NavigationStack
+                {
+                    SearchPage()
+                        
+                        
+                }
+                .tabItem {
+                    Image(systemName: "moon")
+                    Text("Search" )
+                }
+                
+                NavigationStack
+                {
+                    ProfilePage()
+                        
+                        
+                }
+                .tabItem {
+                    Image(systemName: "moon")
+                    Text("Profile" )
+                }
 
-            }
-            .navigationBarBackButtonHidden(true)
+        }
+            
         
         
         
@@ -25,5 +51,5 @@ struct FirmTabView: View {
 }
 
 #Preview {
-    FirmTabView(user: UserModel(username: "asd", uid: "dsa", passwordHash: "dsd"))
+    FirmTabView()
 }

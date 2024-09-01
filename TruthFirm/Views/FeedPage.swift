@@ -1,63 +1,59 @@
 import SwiftUI
 
 struct FeedPage: View {
-    @StateObject var viewModel = FeedViewModel()
-    var user : UserModel
+    @StateObject private var viewModel = FeedViewModel()
+    @EnvironmentObject var authViewModel : AuthViewModel
+    
     var body: some View {
-        NavigationView{
-            VStack {
-                Text("Welcome to TruthFirm")
-                    .font(.largeTitle)
-                    .padding()
+        ScrollView {
+            ForEach(viewModel.reviews , id: \.firmId) { review in
                 
-                Text("Username: \(user.username)")
-                    .font(.title2)
-                    .padding()
-                
-                Text("User ID: \(user.uid)")
-                    .font(.title2)
-                    .padding()
-                
-                Text("Password Hash: \(user.passwordHash)")
-                    .font(.title2)
-                    .padding()
-                
-                // Add more fields as needed
-                Button("Bordered Button") {
-                    print("sa")
-                         viewModel.sigOut()
-                        
-                    
-                }
-                .buttonStyle(.bordered)
-                
-                
-                Spacer()
-                    .fullScreenCover(isPresented: $viewModel.userSignedOut, content: {
-                        LoginPage()
-                    })
-                
-                
+                FeedPostCardView(review: review)
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle("Feed")
-            .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            NavigationLink(destination: FirmCreatePage()) {
-                                Text("Create Firm")
-                            }
-                        }
-                    }
+            
+            
+            if viewModel.isLoading {
+                ProgressView()
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .center)
+            } else if viewModel.reviews.isEmpty {
+                Text("No more reviews.")
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
             
         }
-        
+        .refreshable {
+            Task {
+                await viewModel.fetchReviews()
+            }
+        }
+        .padding()
+        .navigationTitle("Feed")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: FirmCreatePage()) {
+                    Text("Create Firm")
+                }
+            }
+        }
+        .onAppear {
+            Task {
+                await viewModel.fetchReviews()
+            }
+        }
         
         
     }
 }
 
+
 struct FeedPage_Previews: PreviewProvider {
     static var previews: some View {
-        FeedPage(user: UserModel(username: "SampleUser", uid: "12345", passwordHash: "hashedpassword"))
+        NavigationStack{
+            FeedPage()
+            
+        }
     }
 }
