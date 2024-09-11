@@ -9,16 +9,14 @@ class FeedViewModel: ObservableObject {
 
     @Published var isLoading = false
     private var lastDocument: DocumentSnapshot?
-    var firsTime = true
     
+    init() {
+        Task{
+            await fetchReviews()
+        }
+    }
     @MainActor func fetchReviews() async {
-        if firsTime || reviews.count > 9 {
-            
-        }
-        else
-        {
-            return
-        }
+        
         guard !isLoading else { return }
         isLoading = true
         
@@ -28,6 +26,7 @@ class FeedViewModel: ObservableObject {
             .limit(to: 10)
         
         if let lastDoc = lastDocument {
+            print("lastdoc var")
             query = query.start(afterDocument: lastDoc)
         }
         
@@ -36,9 +35,9 @@ class FeedViewModel: ObservableObject {
 
             var snapshot = try await query.getDocuments()
             var _: [()] = try snapshot.documents.compactMap { doc in
+                
                 newReviews.append(try doc.data(as: Review.self))
             }
-            
             
             for rev in newReviews {
                 rev.userInfo = try await db.collection("users").document(rev.userId).getDocument(as:UserModel.self)
@@ -51,18 +50,20 @@ class FeedViewModel: ObservableObject {
             
             
             
-            
-            DispatchQueue.main.async {
-                self.reviews.append(contentsOf: newReviews)
-                self.lastDocument = snapshot.documents.last
-                self.isLoading = false
-                self.firsTime = false
+            if newReviews.count != 0
+            {
+                    self.reviews.append(contentsOf: newReviews)
+                    self.lastDocument = snapshot.documents.last
+                    self.isLoading = false
             }
+            else
+            {
+                isLoading = false
+            }
+            
         } catch {
             print("Error fetching reviews: \(error.localizedDescription)")
-            DispatchQueue.main.async {
                 self.isLoading = false
-            }
         }
     }
     

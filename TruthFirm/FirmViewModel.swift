@@ -6,13 +6,26 @@ class FirmViewModel: ObservableObject {
     @Published var firm: FirmModel?
     @Published var reviews: [Review] = []
     @Published var isLoading = false
-    
+    var userCanReview : Bool
+    {
+        get
+        {
+            return !firm!.reviews.contains(UserInfo.shared.user!.uid)
+        }
+    }
     
 
+    func filterReviews()
+    {
+        reviews = reviews.sorted(by: { rev1, rev2 in
+            rev1.likedUsers.count > rev2.likedUsers.count
+        })
+    }
     func fetchFirmDetails() async {
         isLoading = true
         let db = Firestore.firestore()
         do {
+            
             
 
             let reviewsSnapshot = try await db.collection("reviews")
@@ -30,6 +43,9 @@ class FirmViewModel: ObservableObject {
                     .getDocuments()
                 
                 review.userInfo = try? revUser.documents.first?.data(as: UserModel.self)
+                
+                let revFirm = db.collection("firms").document(review.firmId)
+                review.firmInfo = try await revFirm.getDocument(as: FirmModel.self)
             }
 
             DispatchQueue.main.async {

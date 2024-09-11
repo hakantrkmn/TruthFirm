@@ -49,6 +49,11 @@
 		49B6C89D2C84BF25008D62A7 /* FirmViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C89C2C84BF25008D62A7 /* FirmViewModel.swift */; };
 		49B6C8A02C84C848008D62A7 /* FirmDetailTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C89F2C84C848008D62A7 /* FirmDetailTopView.swift */; };
 		49B6C8A22C84E3C1008D62A7 /* ReviewCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C8A12C84E3C1008D62A7 /* ReviewCardView.swift */; };
+		49B6C8A42C84FA04008D62A7 /* ReviewDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C8A32C84FA04008D62A7 /* ReviewDetailView.swift */; };
+		49B6C8A62C8DB038008D62A7 /* DBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C8A52C8DB038008D62A7 /* DBService.swift */; };
+		49B6C8A82C8DB577008D62A7 /* ReviewDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C8A72C8DB577008D62A7 /* ReviewDetailViewModel.swift */; };
+		49B6C8AA2C8DCD4F008D62A7 /* FirmReviewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C8A92C8DCD4F008D62A7 /* FirmReviewPage.swift */; };
+		49B6C8AC2C8DCD6B008D62A7 /* FirmReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C8AB2C8DCD6B008D62A7 /* FirmReviewViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -91,6 +96,11 @@
 		49B6C89C2C84BF25008D62A7 /* FirmViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmViewModel.swift; sourceTree = "<group>"; };
 		49B6C89F2C84C848008D62A7 /* FirmDetailTopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmDetailTopView.swift; sourceTree = "<group>"; };
 		49B6C8A12C84E3C1008D62A7 /* ReviewCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCardView.swift; sourceTree = "<group>"; };
+		49B6C8A32C84FA04008D62A7 /* ReviewDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailView.swift; sourceTree = "<group>"; };
+		49B6C8A52C8DB038008D62A7 /* DBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBService.swift; sourceTree = "<group>"; };
+		49B6C8A72C8DB577008D62A7 /* ReviewDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailViewModel.swift; sourceTree = "<group>"; };
+		49B6C8A92C8DCD4F008D62A7 /* FirmReviewPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmReviewPage.swift; sourceTree = "<group>"; };
+		49B6C8AB2C8DCD6B008D62A7 /* FirmReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmReviewViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +200,7 @@
 				49B6C8852C83722A008D62A7 /* AuthViewModel.swift */,
 				49B6C8942C849FD1008D62A7 /* SearchViewModel.swift */,
 				49B6C89C2C84BF25008D62A7 /* FirmViewModel.swift */,
+				49B6C8AB2C8DCD6B008D62A7 /* FirmReviewViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -205,6 +216,7 @@
 				49B6C8872C8375BF008D62A7 /* ProfilePage.swift */,
 				49B6C8962C84A007008D62A7 /* SearchPage.swift */,
 				49B6C89A2C84BF0E008D62A7 /* FirmPage.swift */,
+				49B6C8A92C8DCD4F008D62A7 /* FirmReviewPage.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -213,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				49B5F7872C80FDA8006E7A44 /* AuthService.swift */,
+				49B6C8A52C8DB038008D62A7 /* DBService.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -220,12 +233,14 @@
 		49B5F79D2C8256C4006E7A44 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				49B6C8AD2C8E2BEF008D62A7 /* Button */,
 				49B6C89E2C84C835008D62A7 /* FirmDetail */,
 				49B6C8912C849A5B008D62A7 /* Auth */,
 				49B5F79E2C8256D3006E7A44 /* LoadingView.swift */,
 				492BC4F02C8262AC0021C5D9 /* StarRatingView.swift */,
 				49B6C8892C848B52008D62A7 /* FeedPostCardView.swift */,
 				49B6C8982C84BA46008D62A7 /* FirmCardView.swift */,
+				49B6C8A32C84FA04008D62A7 /* ReviewDetailView.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -244,6 +259,7 @@
 				49B6C88B2C849247008D62A7 /* AuthInputFieldView.swift */,
 				49B6C88F2C84945F008D62A7 /* AuthTopView.swift */,
 				49B6C8922C849A6D008D62A7 /* AuthInputView.swift */,
+				49B6C8A72C8DB577008D62A7 /* ReviewDetailViewModel.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -255,6 +271,13 @@
 				49B6C8A12C84E3C1008D62A7 /* ReviewCardView.swift */,
 			);
 			path = FirmDetail;
+			sourceTree = "<group>";
+		};
+		49B6C8AD2C8E2BEF008D62A7 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Button;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -348,20 +371,25 @@
 				49B5F7942C81D541006E7A44 /* RegisterPage.swift in Sources */,
 				49B6C89D2C84BF25008D62A7 /* FirmViewModel.swift in Sources */,
 				492BC4ED2C8261EE0021C5D9 /* FirmModel.swift in Sources */,
+				49B6C8A82C8DB577008D62A7 /* ReviewDetailViewModel.swift in Sources */,
 				492BC4EB2C8260DD0021C5D9 /* FirmCreatePage.swift in Sources */,
+				49B6C8AA2C8DCD4F008D62A7 /* FirmReviewPage.swift in Sources */,
 				49B5F7962C81D7C5006E7A44 /* FeedPage.swift in Sources */,
 				49B5F7922C81D52C006E7A44 /* RegisterViewModel.swift in Sources */,
 				49B6C88C2C849247008D62A7 /* AuthInputFieldView.swift in Sources */,
 				49B6C8A22C84E3C1008D62A7 /* ReviewCardView.swift in Sources */,
 				49B5F79F2C8256D3006E7A44 /* LoadingView.swift in Sources */,
 				49B6C8842C836907008D62A7 /* RootView.swift in Sources */,
+				49B6C8A62C8DB038008D62A7 /* DBService.swift in Sources */,
 				49B5F79C2C825283006E7A44 /* FeedViewModel.swift in Sources */,
 				49B6C8A02C84C848008D62A7 /* FirmDetailTopView.swift in Sources */,
 				492BC4F12C8262AC0021C5D9 /* StarRatingView.swift in Sources */,
 				49B5F7882C80FDA8006E7A44 /* AuthService.swift in Sources */,
 				49B6C8972C84A007008D62A7 /* SearchPage.swift in Sources */,
+				49B6C8A42C84FA04008D62A7 /* ReviewDetailView.swift in Sources */,
 				49B5F78C2C80FDE6006E7A44 /* LoginPage.swift in Sources */,
 				49B5F7902C80FE43006E7A44 /* UserModel.swift in Sources */,
+				49B6C8AC2C8DCD6B008D62A7 /* FirmReviewViewModel.swift in Sources */,
 				49B6C89B2C84BF0E008D62A7 /* FirmPage.swift in Sources */,
 				492BC4EF2C8261FA0021C5D9 /* FirmCreateViewModel.swift in Sources */,
 				49B6C8882C8375BF008D62A7 /* ProfilePage.swift in Sources */,

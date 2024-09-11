@@ -6,10 +6,8 @@ class RegisterViewModel: ObservableObject {
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
     @Published var isLoading: Bool = false
-    @Published var errorMessage: String?
-    @Published var showAlert: Bool = false
-    var user = UserModel(username: "", uid: "", passwordHash: "")
-    @Published var registered: Bool = false
+    var user : UserModel?
+    @Published var alertItem : AlertItem?
 
     var passwordsMatch: Bool {
         return !password.isEmpty && password == confirmPassword
@@ -27,13 +25,11 @@ class RegisterViewModel: ObservableObject {
         }
 
         isLoading = true
-        errorMessage = nil
 
         do {
             user = try await AuthService.registerUser(username: username, password: password)
-            print("User registered: \(user.username)")
+            print("User registered: \(user!.username)")
             isLoading = false
-            registered = true
 
             // Handle successful registration, perhaps navigate to the main content
         } catch {
@@ -43,7 +39,7 @@ class RegisterViewModel: ObservableObject {
     }
 
     private func showAlertMessage(_ message: String) {
-        errorMessage = message
-        showAlert = true
+        alertItem = AlertItem(title: Text("Error"), message: Text(message), dismissButton: .default(Text("OK")))
+
     }
 }

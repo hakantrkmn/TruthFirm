@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SearchPage: View {
     @StateObject private var viewModel = SearchViewModel()
-    let columns = Array(repeating: GridItem(.flexible()), count: 2)
+    let columns = Array(repeating: GridItem(.flexible()), count: 3)
     var body: some View {
         GeometryReader{geometry in
                 VStack {
@@ -15,7 +15,7 @@ struct SearchPage: View {
                             .frame(maxWidth: .infinity, alignment: .center)
                     } else {
                         ScrollView {
-                            LazyVGrid(columns: columns, spacing: 10) {
+                            LazyVGrid(columns: columns, spacing: 30) {
                                 ForEach(viewModel.searchResults) { firm in
                                     
                                     NavigationLink(destination: FirmPage(firm: firm) ){
@@ -24,15 +24,17 @@ struct SearchPage: View {
                                     .buttonStyle(PlainButtonStyle())
                                     
                                     
-                                    
-                                    
                                 }
-                                .frame(width: max((geometry.size.width / 2) - 20, 0),
-                                       height: max((geometry.size.width / 2) - 20, 0))
+                                .frame(width: max((geometry.size.width / 3.2) , 0),
+                                       height: max((geometry.size.width / 3.2) , 0))
+                                .padding()
 
                             }
                         }
                     }
+                }
+                .onTapGesture {
+                    hideKeyboard()
                 }
             .searchable(text: $viewModel.searchQuery)
             .autocorrectionDisabled()
@@ -46,6 +48,8 @@ struct SearchPage: View {
 
 struct SearchPage_Previews: PreviewProvider {
     static var previews: some View {
-        SearchPage()
+        NavigationStack{
+            SearchPage()
+        }
     }
 }

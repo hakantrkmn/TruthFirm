@@ -19,11 +19,12 @@ struct FirmCardView: View {
             Text(firm.description)
                 .font(.body)
                 .lineLimit(3)
-            Text(String(firm.average!) + "/10")
+            Text(String(firm.average ?? 0) + "/10")
                 .font(.subheadline)
             Text(String(firm.reviews.count) + " reviews")
                 .font(.subheadline)
         }
+        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/ , maxHeight: .infinity)
         .padding()
         .background(Color(.systemGray6))
         .cornerRadius(10)

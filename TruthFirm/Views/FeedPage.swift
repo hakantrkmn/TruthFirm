@@ -3,15 +3,10 @@ import SwiftUI
 struct FeedPage: View {
     @StateObject private var viewModel = FeedViewModel()
     @EnvironmentObject var authViewModel : AuthViewModel
-    
+    @State var showDetailView = false
+    @State var choosenReview : Review?
     var body: some View {
-        ScrollView {
-            ForEach(viewModel.reviews , id: \.firmId) { review in
-                
-                FeedPostCardView(review: review)
-            }
-            
-            
+        ZStack{
             if viewModel.isLoading {
                 ProgressView()
                     .padding()
@@ -21,31 +16,81 @@ struct FeedPage: View {
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .center)
             }
-            
-        }
-        .refreshable {
-            Task {
-                await viewModel.fetchReviews()
+            List {
+                ForEach(viewModel.reviews) { review in
+                        FeedPostCardView(review: review)
+                            .onTapGesture {
+                                choosenReview = review
+                                withAnimation(Animation.easeInOut(duration: 0.2)) {
+                                    showDetailView = true
+                                    
+                                }
+                            }
+                        
+                    .listRowBackground(Color.clear)
+                    .listRowSeparator(.hidden)
+                    
+                }
+                
+                
+               
+                
+                
             }
-        }
-        .padding()
-        .navigationTitle("Feed")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: FirmCreatePage()) {
-                    Text("Create Firm")
+            .listStyle(.plain)
+            .refreshable {
+                Task {
+                    await viewModel.fetchReviews()
                 }
             }
-        }
-        .onAppear {
-            Task {
-                await viewModel.fetchReviews()
+            .navigationTitle("Feed")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: FirmCreatePage()) {
+                        Text("Create Firm")
+                    }
+                }
+            }
+            .blur(radius: showDetailView ? 3 : 0)
+            if showDetailView
+            {
+                ReviewDetailView(review: choosenReview!, isShowingDetail: $showDetailView)
+                    .transition(.scale)
+                
             }
         }
+        .onAppear(perform: {
+            Task
+            {
+                do {
+                    try await DBService.getReview(reviewID: "13wNpGiZnOQZOt3g0VRH") { result in
+                        switch result {
+                        case .success(let success):
+                            dump(success)
+                        case .failure(let failure):
+                            dump(failure)
+                        }
+                    }
+                } catch let err {
+                    dump(err)
+                }
+            }
+            dump(UserInfo.shared.user)
+        })
+        .navigationDestination(for: FirmModel.self) { firm in
+            
+            FirmPage(firm: firm)
+                .onAppear(perform: {
+                    showDetailView = false
+                })
+               
+        }
+        
         
         
     }
+    
 }
 
 

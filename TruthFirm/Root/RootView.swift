@@ -12,15 +12,20 @@ struct RootView: View {
     var body: some View {
         Group
         {
-            if authViewModel.user != nil {
-                // User is logged in, navigate to the FeedPage directly
+            if authViewModel.isLoading{
+                LoadingView()
+            }
+            else if authViewModel.user != nil
+            {
                 FirmTabView()
                     .environmentObject(authViewModel)
-            } else {
+            }
+            else {
                 // No user is logged in, show the LoginPage
                 LoginPage()
                     .environmentObject(authViewModel)
             }
+            
         }
         
     }

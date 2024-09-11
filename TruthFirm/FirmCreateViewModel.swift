@@ -92,7 +92,8 @@ class FirmCreateViewModel: ObservableObject {
                 "userId": user?.uid, // Replace with actual user ID
                 "rating": rating,
                 "reviewText": review,
-                "timestamp": Date.now
+                "timestamp": Date.now,
+                "likedUsers" : []
             ])
             
             // Update the firm document with the new review ID

@@ -17,12 +17,16 @@ class AuthService {
         }
         
         
-        let userModel = UserModel(username: username, uid: usersRef.document().documentID)
+        let userModel = UserModel(username: username, uid: usersRef.document().documentID,likedReviews: [])
         try await usersRef.document(userModel.uid).setData([
             "username": username,
             "passwordHash": passwordHash,
-            "uid": userModel.uid
+            "uid": userModel.uid,
+            "likedReviews" : userModel.likedReviews
         ])
+        UserInfo.shared.user = userModel
+        saveUserInfo(userModel)
+
         return userModel
     }
     static func signOut() throws {
@@ -39,15 +43,16 @@ class AuthService {
         
         let storedHash = document.get("passwordHash") as? String
         if storedHash != passwordHash {
-            print("laksndşaks")
-
             throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid password"])
         }
         
-        let userModel = UserModel(username: username, uid: document.get("uid") as! String)
+        let userModel = try document.data(as: UserModel.self)
         saveUserInfo(userModel)
+        UserInfo.shared.user = userModel
+
         return userModel
     }
+  
     
     static private func sha256(_ input: String) -> String {
         let inputData = Data(input.utf8)

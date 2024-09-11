@@ -69,11 +69,11 @@ struct RegisterPage: View {
                 
             }
         .padding()
-        .alert(isPresented: $viewModel.showAlert) {
+        .alert(item: $viewModel.alertItem) { alertItem in
             Alert(
-                title: Text("Error"),
-                message: Text(viewModel.errorMessage ?? "Unknown error"),
-                dismissButton: .default(Text("OK"))
+                title: alertItem.title,
+                message: alertItem.message,
+                dismissButton: alertItem.dismissButton
             )
         }
     }

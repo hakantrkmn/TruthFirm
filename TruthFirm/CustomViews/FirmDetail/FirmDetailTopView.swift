@@ -25,6 +25,10 @@ struct FirmDetailTopView: View {
                 Text( "Description : \(firm.description)")
                     .font(.body)
                     .padding(.bottom, 20)
+            
+            Text( "Rating : \(firm.average!, specifier: "%.1f")")
+                .font(.body)
+                .padding(.bottom, 20)
         }
         .frame(width: 300)
       

@@ -29,10 +29,8 @@ struct FeedPostCardView: View {
                 }
                 Spacer()
                 VStack{
-                    NavigationLink(destination: ProfilePage()) {
                         Text(review.firmInfo!.name)
                             .font(.body)
-                    }
                     
                     Text(review.timestamp.getFormattedDate())
                         .font(.body)
@@ -43,7 +41,7 @@ struct FeedPostCardView: View {
         .padding()
         .background()
         .cornerRadius(10)
-        .shadow(color: colorScheme == .dark ? Color.white.opacity(0.2) : Color.black.opacity(0.2), radius: 4)
+        .shadow(color: colorScheme == .dark ? Color.white.opacity(0.2) : Color.black.opacity(0.2), radius: 10)
 
         
     }
