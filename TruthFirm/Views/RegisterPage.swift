@@ -46,7 +46,6 @@ struct RegisterPage: View {
                     Button(action: {
                         Task {
                             await viewModel.registerUser()
-                            authViewModel.user = viewModel.user
                         }
                     }) {
                         if viewModel.isLoading {

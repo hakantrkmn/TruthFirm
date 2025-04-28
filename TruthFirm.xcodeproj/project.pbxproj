@@ -54,6 +54,7 @@
 		49B6C8A82C8DB577008D62A7 /* ReviewDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C8A72C8DB577008D62A7 /* ReviewDetailViewModel.swift */; };
 		49B6C8AA2C8DCD4F008D62A7 /* FirmReviewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C8A92C8DCD4F008D62A7 /* FirmReviewPage.swift */; };
 		49B6C8AC2C8DCD6B008D62A7 /* FirmReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C8AB2C8DCD6B008D62A7 /* FirmReviewViewModel.swift */; };
+		49B6C8B12C91897F008D62A7 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49B6C8B02C91897F008D62A7 /* ProfileViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +102,7 @@
 		49B6C8A72C8DB577008D62A7 /* ReviewDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailViewModel.swift; sourceTree = "<group>"; };
 		49B6C8A92C8DCD4F008D62A7 /* FirmReviewPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmReviewPage.swift; sourceTree = "<group>"; };
 		49B6C8AB2C8DCD6B008D62A7 /* FirmReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirmReviewViewModel.swift; sourceTree = "<group>"; };
+		49B6C8B02C91897F008D62A7 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +203,7 @@
 				49B6C8942C849FD1008D62A7 /* SearchViewModel.swift */,
 				49B6C89C2C84BF25008D62A7 /* FirmViewModel.swift */,
 				49B6C8AB2C8DCD6B008D62A7 /* FirmReviewViewModel.swift */,
+				49B6C8B02C91897F008D62A7 /* ProfileViewModel.swift */,
 			);
 			name = ViewModels;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				492BC4EB2C8260DD0021C5D9 /* FirmCreatePage.swift in Sources */,
 				49B6C8AA2C8DCD4F008D62A7 /* FirmReviewPage.swift in Sources */,
 				49B5F7962C81D7C5006E7A44 /* FeedPage.swift in Sources */,
+				49B6C8B12C91897F008D62A7 /* ProfileViewModel.swift in Sources */,
 				49B5F7922C81D52C006E7A44 /* RegisterViewModel.swift in Sources */,
 				49B6C88C2C849247008D62A7 /* AuthInputFieldView.swift in Sources */,
 				49B6C8A22C84E3C1008D62A7 /* ReviewCardView.swift in Sources */,

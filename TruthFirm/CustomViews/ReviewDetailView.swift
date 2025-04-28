@@ -9,43 +9,43 @@ import SwiftUI
 
 struct ReviewDetailView: View {
     @Binding var isShowingDetail : Bool
-    
     @StateObject var viewModel : ReviewDetailViewModel
-    
-    init(review: Review , isShowingDetail : Binding<Bool>) {
-        _viewModel = StateObject(wrappedValue: ReviewDetailViewModel(review: review))
+    @Binding var choosedReview : Review
+    init(isShowingDetail : Binding<Bool>,choosenReview : Binding<Review>) {
+        _viewModel = StateObject(wrappedValue: ReviewDetailViewModel())
         _isShowingDetail = isShowingDetail
+        _choosedReview = choosenReview
         
     }
     var body: some View {
         VStack{
             ScrollView{
-                Text(viewModel.review.reviewText)
+                Text(choosedReview.reviewText)
             }
             .padding()
             .frame(width: 300, height: 400)
             
             HStack{
-                Text(viewModel.review.userInfo?.username ?? "null")
-                Text(viewModel.review.timestamp.getFormattedDate())
+                Text(choosedReview.userInfo?.username ?? "null")
+                Text(choosedReview.timestamp.getFormattedDate())
                 
             }
             
             HStack
             {
-                if viewModel.review.likedUsers.contains(UserInfo.shared.user!.uid)
+                if choosedReview.likedUsers.contains(UserInfo.shared.user!.uid)
                 {
-                    DisLikeButton(islikeProcessing: $viewModel.isLikeProcessing, disLikeReview: viewModel.unLikeReview)
+                    DisLikeButton(islikeProcessing: $viewModel.isLikeProcessing, review: $choosedReview, disLikeReview: viewModel.unLikeReview(review:))
                 }
                 else
                 {
-                    LikeButton(islikeProcessing: $viewModel.isLikeProcessing, likeReview: viewModel.likeReview)
+                    LikeButton(islikeProcessing: $viewModel.isLikeProcessing, likeReview: viewModel.likeReview(review:), review: $choosedReview)
                 }
                 
                 Spacer()
                 
-                NavigationLink(value: viewModel.review.firmInfo!) {
-                    Text(viewModel.review.firmInfo?.name ?? "null")
+                NavigationLink(value: choosedReview.firmInfo!) {
+                    Text(choosedReview.firmInfo?.name ?? "null")
                 }
                 
             }
@@ -86,17 +86,23 @@ struct ReviewDetailView: View {
 }
 
 #Preview {
-    ReviewDetailView(review: Review.sampleReview, isShowingDetail: .constant(true))
-    
+
+    ReviewDetailView( isShowingDetail: .constant(false), choosenReview: .constant(.sampleReview))
 }
 
 
 struct LikeButton: View {
     @Binding var islikeProcessing : Bool
-    var likeReview : () -> Void
+    var likeReview : (Review) async throws -> Review?
+    @Binding var review : Review
     var body: some View {
         Button("Like", systemImage: "hand.thumbsup.fill") {
-            likeReview()
+            Task {
+                let result = try await likeReview(review)
+                if let updatedReview = result {
+                    review = updatedReview
+                }
+            }
         }
         .disabled(islikeProcessing)
     }
@@ -104,19 +110,19 @@ struct LikeButton: View {
 
 struct DisLikeButton: View {
     @Binding var islikeProcessing : Bool
-    var disLikeReview : () -> Void
+    @Binding var review : Review
+    var disLikeReview : (Review) async throws->  Review?
     var body: some View {
         Button("Unlike", systemImage: "hand.thumbsdown.fill") {
-            disLikeReview()
+            Task {
+                let result = try await disLikeReview(review)
+                if let updatedReview = result {
+                    review = updatedReview
+                }
+            }
         }
         .disabled(islikeProcessing)
         .tint(Color(.red))
     }
 }
 
-#Preview {
-    LikeButton(islikeProcessing: .constant(false)) {
-        
-    }
-    
-}

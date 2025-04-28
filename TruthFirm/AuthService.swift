@@ -1,4 +1,5 @@
 import Firebase
+import SwiftUI
 import FirebaseFunctions
 import CryptoKit
 
@@ -6,51 +7,54 @@ class AuthService {
     
     static let db = Firestore.firestore()
     
-    static func registerUser(username: String, password: String) async throws -> UserModel {
+    static func registerUser(username: String, password: String,completionHandler : @escaping (Result<UserModel,AlertItem>) -> Void) async throws {
         let passwordHash = sha256(password)
         
         let usersRef = db.collection("users")
         let querySnapshot = try await usersRef.whereField("username", isEqualTo: username).getDocuments()
         
         if !querySnapshot.isEmpty {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Username already taken"])
+            completionHandler(.failure(AlertItem(title: Text("Error"), message: Text("Username already taken"), dismissButton: .default(Text("OK")))))
+            return
         }
         
         
-        let userModel = UserModel(username: username, uid: usersRef.document().documentID,likedReviews: [])
+        let userModel = UserModel(username: username, uid: usersRef.document().documentID,likedReviews: [],createdReviews: [])
         try await usersRef.document(userModel.uid).setData([
             "username": username,
             "passwordHash": passwordHash,
             "uid": userModel.uid,
-            "likedReviews" : userModel.likedReviews
+            "likedReviews" : userModel.likedReviews,
+            "createdReviews" : userModel.createdReviews
         ])
         UserInfo.shared.user = userModel
         saveUserInfo(userModel)
 
-        return userModel
+        completionHandler(.success(userModel))
     }
     static func signOut() throws {
         deleteUserInfo()
     }
-    static func loginUser(username: String, password: String) async throws -> UserModel {
+    static func loginUser(username: String, password: String,completionHandler : @escaping (Result<UserModel,AlertItem>) -> Void) async throws  {
         let passwordHash = sha256(password)
         let usersRef = db.collection("users")
         let querySnapshot = try await usersRef.whereField("username", isEqualTo: username).getDocuments()
         
         guard let document = querySnapshot.documents.first else {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Username not found"])
+            completionHandler(.failure(AlertItem(title: Text("Error"), message: Text("Username not found"), dismissButton: .default(Text("OK")))))
+            return
         }
         
         let storedHash = document.get("passwordHash") as? String
         if storedHash != passwordHash {
-            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid password"])
+            completionHandler(.failure(AlertItem(title: Text("Error"), message: Text("Invalid Password"), dismissButton: .default(Text("OK")))))
         }
         
         let userModel = try document.data(as: UserModel.self)
         saveUserInfo(userModel)
         UserInfo.shared.user = userModel
 
-        return userModel
+        completionHandler(.success(userModel))
     }
   
     

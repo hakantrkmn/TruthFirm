@@ -6,7 +6,6 @@ class RegisterViewModel: ObservableObject {
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
     @Published var isLoading: Bool = false
-    var user : UserModel?
     @Published var alertItem : AlertItem?
 
     var passwordsMatch: Bool {
@@ -15,31 +14,31 @@ class RegisterViewModel: ObservableObject {
 
     func registerUser() async {
         guard !username.isEmpty else {
-            showAlertMessage("Username cannot be empty")
+            alertItem = AlertItem(title: Text("Error"), message: Text("Username cannot be empty"), dismissButton: .default(Text("OK")))
             return
         }
 
         guard passwordsMatch else {
-            showAlertMessage("Passwords do not match")
+            alertItem = AlertItem(title: Text("Error"), message: Text("Password do not match"), dismissButton: .default(Text("OK")))
             return
         }
 
         isLoading = true
 
         do {
-            user = try await AuthService.registerUser(username: username, password: password)
-            print("User registered: \(user!.username)")
-            isLoading = false
-
-            // Handle successful registration, perhaps navigate to the main content
+            try await AuthService.registerUser(username: username, password: password) { result in
+                switch result {
+                case .success(let success):
+                    print("User registered: \(success.username)")
+                    self.isLoading = false
+                case .failure(let failure):
+                    self.alertItem = failure
+                }
+            }
         } catch {
-            showAlertMessage(error.localizedDescription)
+            alertItem = AlertItem(title: Text("Error"), message: Text(error.localizedDescription), dismissButton: .default(Text("OK")))
             isLoading = false
         }
     }
 
-    private func showAlertMessage(_ message: String) {
-        alertItem = AlertItem(title: Text("Error"), message: Text(message), dismissButton: .default(Text("OK")))
-
-    }
 }

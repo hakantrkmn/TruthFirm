@@ -6,11 +6,16 @@ class FirmViewModel: ObservableObject {
     @Published var firm: FirmModel?
     @Published var reviews: [Review] = []
     @Published var isLoading = false
+    var choosenReview : Review?
+    var alertItem : AlertItem?
     var userCanReview : Bool
     {
         get
         {
-            return !firm!.reviews.contains(UserInfo.shared.user!.uid)
+            if let userId = UserInfo.shared.user?.uid {
+                return !reviews.contains { $0.userId == userId }
+            }
+            return true
         }
     }
     
@@ -38,14 +43,25 @@ class FirmViewModel: ObservableObject {
             }
             
             for review in reviews {
-                let revUser = try await db.collection("users")
-                    .whereField("uid", isEqualTo: review.userId)
-                    .getDocuments()
+                try await DBService.getUserInfo(userID: review.userId) { result in
+                    switch result {
+                    case .success(let success):
+                        review.userInfo = success
+                    case .failure(let failure):
+                        self.alertItem = AlertItem(title: Text("Error"), message: Text("Failed to fetch review"), dismissButton: .default(Text("OK")))
+                    }
+                }
                 
-                review.userInfo = try? revUser.documents.first?.data(as: UserModel.self)
+                try await DBService.getFirmInfo(firmID: review.firmId) { result in
+                    switch result {
+                    case .success(let success):
+                        review.firmInfo = success
+                    case .failure(let failure):
+                        self.alertItem = AlertItem(title: Text("Error"), message: Text("Failed to fetch firm"), dismissButton: .default(Text("OK")))
+
+                    }
+                }
                 
-                let revFirm = db.collection("firms").document(review.firmId)
-                review.firmInfo = try await revFirm.getDocument(as: FirmModel.self)
             }
 
             DispatchQueue.main.async {
@@ -53,6 +69,8 @@ class FirmViewModel: ObservableObject {
             }
         } catch {
             print("Error fetching firm details: \(error.localizedDescription)")
+            self.alertItem = AlertItem(title: Text("Error"), message: Text("Error fetching firm details: \(error.localizedDescription)"), dismissButton: .default(Text("OK")))
+
             DispatchQueue.main.async {
                 self.isLoading = false
             }

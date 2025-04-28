@@ -3,19 +3,49 @@ import SwiftUI
 import Firebase
 import FirebaseFirestore
 import FirebaseAuth
+@MainActor
 class FeedViewModel: ObservableObject {
     @Published var reviews: [Review] = []
     @Published var userSignedOut = false
 
     @Published var isLoading = false
-    private var lastDocument: DocumentSnapshot?
+    var choosenReview : Review?
     
+    private var lastDocument: DocumentSnapshot?
+
     init() {
         Task{
             await fetchReviews()
         }
     }
-    @MainActor func fetchReviews() async {
+    
+    func updateReviews() async
+    {
+        Task
+        {
+            do
+            {
+                for (index,review) in reviews.enumerated() {
+                    try await DBService.getReview(reviewID: review.id!) { result in
+                        switch result {
+                        case .success(let success):
+                            self.reviews[index] = success
+                        case .failure(let failure):
+                            print(failure)
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                
+            }
+        }
+        
+    }
+    
+    
+     func fetchReviews() async {
         
         guard !isLoading else { return }
         isLoading = true
@@ -33,7 +63,7 @@ class FeedViewModel: ObservableObject {
         do {
             var newReviews : [Review] = []
 
-            var snapshot = try await query.getDocuments()
+            let snapshot = try await query.getDocuments()
             var _: [()] = try snapshot.documents.compactMap { doc in
                 
                 newReviews.append(try doc.data(as: Review.self))
@@ -70,7 +100,8 @@ class FeedViewModel: ObservableObject {
     func signOut()
     {
         do{
-            try Auth.auth().signOut()
+            UserInfo.shared.user = nil
+            deleteUserInfo()
             userSignedOut = true
         }
         catch

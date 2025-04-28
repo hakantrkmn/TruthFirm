@@ -7,7 +7,7 @@ struct SearchPage: View {
         GeometryReader{geometry in
                 VStack {
                     if viewModel.isLoading {
-                        ProgressView()
+                        LoadingView()
                             .padding()
                     } else if viewModel.showNoResultsMessage {
                         Text("We don't have that firm in our database.")

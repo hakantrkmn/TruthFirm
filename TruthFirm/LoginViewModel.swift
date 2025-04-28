@@ -8,36 +8,34 @@ class LoginViewModel: ObservableObject {
     var user : UserModel?
     @Published var alertItem : AlertItem?
     
-
-    
-    func loginUser(eo : AuthViewModel) async {
+    @MainActor func loginUser(eo : AuthViewModel) async {
         guard !username.isEmpty, !password.isEmpty else {
             alertItem = AlertItem(title: Text("Error"), message: Text("Username and password cannot be empty"), dismissButton: .default(Text("OK")))
-
-            showAlertMessage("Username and password cannot be empty")
             return
         }
 
         isLoading = true
 
         do {
-            user = try await AuthService.loginUser(username: username, password: password)
-            print("User logged in: \(user!.username)")
-            eo.user = user
-            isLoading = false
-            // Handle successful login, maybe update a user session in the app
+            try await AuthService.loginUser(username: username, password: password) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let success):
+                        self.user = success
+                        print("User logged in: \(self.user!.username)")
+                        eo.user = self.user
+                        self.isLoading = false
+                    case .failure(let failure):
+                        self.alertItem = failure
+                        self.isLoading = false
+                    }
+                }
+            }
         } catch {
-            alertItem = AlertItem(title: Text("Error"), message: Text(error.localizedDescription), dismissButton: .default(Text("OK")))
-            showAlertMessage(error.localizedDescription)
-            isLoading = false
-
+            DispatchQueue.main.async {
+                self.alertItem = AlertItem(title: Text("Error"), message: Text(error.localizedDescription), dismissButton: .default(Text("OK")))
+                self.isLoading = false
+            }
         }
     }
-
-    private func showAlertMessage(_ message: String) {
-        alertItem = AlertItem(title: Text("Error"), message: Text(message), dismissButton: .default(Text("OK")))
-
-    }
 }
-
-

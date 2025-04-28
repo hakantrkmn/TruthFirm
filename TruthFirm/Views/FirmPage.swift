@@ -4,7 +4,6 @@ struct FirmPage: View {
     @StateObject  var viewModel = FirmViewModel()
     var firm : FirmModel
     @State var isShowingDetail = false
-    @State var choosenReview : Review?
     @State var showReview = false
     var body: some View {
         if let firm = viewModel.firm {
@@ -12,6 +11,7 @@ struct FirmPage: View {
                 VStack{
                     FirmDetailTopView(firm: firm)
                     
+                
                     
                     ZStack {
                         // Layer 1: This HStack will manage the "Filter" button on the right
@@ -51,11 +51,14 @@ struct FirmPage: View {
                             .onTapGesture {
                                 withAnimation {
                                     isShowingDetail = true
-                                    choosenReview = review
+                                    viewModel.choosenReview = review
                                 }
                             }
                             .listRowBackground(Color.clear)
                             .listRowSeparator(.hidden)
+                    }
+                    .refreshable {
+                        
                     }
                     .safeAreaInset(edge: .bottom, content: {
                         if viewModel.userCanReview
@@ -93,8 +96,10 @@ struct FirmPage: View {
                 .blur(radius: isShowingDetail ? 3 : 0)
                 if isShowingDetail
                 {
-                    ReviewDetailView(review: choosenReview!, isShowingDetail: $isShowingDetail)
-                    
+                    ReviewDetailView(isShowingDetail: $isShowingDetail ,choosenReview: $viewModel.reviews.first { rev in
+                        rev.id == viewModel.choosenReview!.id
+                    }!)
+                            .transition(.scale)
                 }
                 
                 

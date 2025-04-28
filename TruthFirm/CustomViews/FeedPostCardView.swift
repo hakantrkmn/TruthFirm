@@ -28,6 +28,13 @@ struct FeedPostCardView: View {
                         .font(.body)
                 }
                 Spacer()
+                HStack(spacing:5){
+                    Text("\(review.likedUsers.count)")
+                    Image(systemName: "hand.thumbsup.fill")
+                        .foregroundColor(.blue)
+                }
+                
+                Spacer()
                 VStack{
                         Text(review.firmInfo!.name)
                             .font(.body)

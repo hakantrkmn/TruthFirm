@@ -4,38 +4,39 @@ struct FeedPage: View {
     @StateObject private var viewModel = FeedViewModel()
     @EnvironmentObject var authViewModel : AuthViewModel
     @State var showDetailView = false
-    @State var choosenReview : Review?
+    
+    let timer = Timer.publish(every: 2, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         ZStack{
-            if viewModel.isLoading {
+            if viewModel.isLoading 
+            {
                 ProgressView()
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .center)
-            } else if viewModel.reviews.isEmpty {
+            } 
+            else if viewModel.reviews.isEmpty
+            {
                 Text("No more reviews.")
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .center)
             }
-            List {
+            List 
+            {
                 ForEach(viewModel.reviews) { review in
-                        FeedPostCardView(review: review)
-                            .onTapGesture {
-                                choosenReview = review
-                                withAnimation(Animation.easeInOut(duration: 0.2)) {
-                                    showDetailView = true
-                                    
-                                }
+                    FeedPostCardView(review: review)
+                        .onTapGesture {
+                            viewModel.choosenReview = review
+                            withAnimation(Animation.easeInOut(duration: 0.2)) {
+                                showDetailView = true
+                                
                             }
-                        
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+                        }
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
                     
+                
                 }
-                
-                
-               
-                
-                
             }
             .listStyle(.plain)
             .refreshable {
@@ -55,37 +56,31 @@ struct FeedPage: View {
             .blur(radius: showDetailView ? 3 : 0)
             if showDetailView
             {
-                ReviewDetailView(review: choosenReview!, isShowingDetail: $showDetailView)
-                    .transition(.scale)
+                ReviewDetailView(isShowingDetail: $showDetailView ,choosenReview: $viewModel.reviews.first { rev in
+                    rev.id == viewModel.choosenReview!.id
+                }!)
+                        .transition(.scale)
+                
+                
                 
             }
         }
-        .onAppear(perform: {
-            Task
-            {
-                do {
-                    try await DBService.getReview(reviewID: "13wNpGiZnOQZOt3g0VRH") { result in
-                        switch result {
-                        case .success(let success):
-                            dump(success)
-                        case .failure(let failure):
-                            dump(failure)
-                        }
-                    }
-                } catch let err {
-                    dump(err)
-                }
-            }
-            dump(UserInfo.shared.user)
-        })
         .navigationDestination(for: FirmModel.self) { firm in
             
             FirmPage(firm: firm)
                 .onAppear(perform: {
                     showDetailView = false
                 })
-               
+            
         }
+        .onReceive(timer, perform: { _ in
+            Task
+            {
+                await self.viewModel.updateReviews()
+
+            }
+        })
+        
         
         
         

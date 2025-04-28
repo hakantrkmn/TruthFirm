@@ -36,6 +36,7 @@ class FirmReviewViewModel: ObservableObject {
                 self.rating = 0
                 self.reviewText = ""
             }
+            UserInfo.shared.user?.createdReviews.append(reviewRef.documentID)
         } catch {
             isSubmitting = false
             alertItem = AlertItem(title: Text("Error"), message: Text("Something happened when review"), dismissButton: .default(Text("OK")))

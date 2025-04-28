@@ -17,15 +17,24 @@ struct ReviewCardView: View {
                 .lineLimit(4)
                 .padding(.bottom, 10)
 
-            Text(review.userInfo?.username ?? "hakntrkmn")
-                .font(.body)
-                .frame(maxWidth: .infinity,alignment: .trailing)
-                .padding(.trailing , 5)
+            HStack
+            {
+                Text("\(review.likedUsers.count) people liked")
+                    .font(.body)
+                    .padding(.trailing , 5)
+                    .foregroundColor(.blue)
+                Spacer()
+                VStack{
+                    Text(review.userInfo?.username ?? "hakntrkmn")
+                        .font(.body)
+                        .padding(.trailing , 5)
+                    
+                    Text("Rating: \(review.rating)/10")
+                        .font(.headline)
+                        .padding(.trailing , 5)
+                }
+            }
             
-            Text("Rating: \(review.rating)/10")
-                .font(.headline)
-                .frame(maxWidth: .infinity,alignment: .trailing)
-                .padding(.trailing , 5)
             
         }
         .padding()
